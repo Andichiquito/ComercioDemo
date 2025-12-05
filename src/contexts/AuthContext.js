@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { supabase } from '../supabaseClient';
 
 const AuthContext = createContext();
 
@@ -14,114 +14,96 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem('token'));
 
-  const API_BASE = 'http://localhost:5000/api';
-
-  // Configurar axios para incluir token en todas las peticiones
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
-    }
-  }, [token]);
-
-  // Verificar token al cargar la aplicación
-  useEffect(() => {
-    const verifyToken = async () => {
-      if (token) {
-        try {
-          const response = await axios.get(`${API_BASE}/auth/verify`);
-          if (response.data.success) {
-            setUser(response.data.data.user);
-          } else {
-            // Token inválido
-            logout();
-          }
-        } catch (error) {
-          console.error('Error verificando token:', error);
-          logout();
-        }
-      }
+    // Check active session
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
       setLoading(false);
     };
 
-    verifyToken();
-  }, [token]);
+    getSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_BASE}/auth/login`, {
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
 
-      if (response.data.success) {
-        const { user: userData, token: newToken } = response.data.data;
-        
-        setUser(userData);
-        setToken(newToken);
-        localStorage.setItem('token', newToken);
-        
-        return { success: true, user: userData };
-      } else {
-        return { success: false, message: response.data.message };
+      if (error) {
+        return { success: false, message: error.message };
       }
+
+      return { success: true, user: data.user };
     } catch (error) {
       console.error('Error en login:', error);
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Error de conexión' 
+      return {
+        success: false,
+        message: 'Error inesperado al iniciar sesión'
       };
     }
   };
 
   const register = async (userData) => {
     try {
-      const response = await axios.post(`${API_BASE}/auth/register`, userData);
+      // Assuming userData contains email and password, and potential extra metadata
+      const { email, password, ...rest } = userData;
 
-      if (response.data.success) {
-        const { user: newUser, token: newToken } = response.data.data;
-        
-        setUser(newUser);
-        setToken(newToken);
-        localStorage.setItem('token', newToken);
-        
-        return { success: true, user: newUser };
-      } else {
-        return { success: false, message: response.data.message };
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: rest // Store other fields like name, role as user_metadata
+        }
+      });
+
+      if (error) {
+        return { success: false, message: error.message };
       }
+
+      if (data.user) {
+        return { success: true, user: data.user };
+      }
+
+      return { success: false, message: "No se pudo registrar el usuario" };
+
     } catch (error) {
       console.error('Error en registro:', error);
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Error de conexión' 
+      return {
+        success: false,
+        message: 'Error inesperado al registrarse'
       };
     }
   };
 
   const logout = async () => {
     try {
-      // Intentar hacer logout en el servidor
-      await axios.post(`${API_BASE}/auth/logout`);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
     } catch (error) {
       console.error('Error en logout:', error);
-    } finally {
-      // Limpiar estado local independientemente del resultado del servidor
-      setUser(null);
-      setToken(null);
-      localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
     }
   };
 
+  // Helper functions to check roles based on user_metadata
+  // Adjust key names based on how you save them in 'register' or Supabase
   const isAdmin = () => {
-    return user?.rol === 'admin';
+    return user?.user_metadata?.rol === 'admin';
   };
 
   const isClient = () => {
-    return user?.rol === 'cliente';
+    return user?.user_metadata?.rol === 'cliente';
   };
 
   const isAuthenticated = () => {
@@ -129,7 +111,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const hasRole = (role) => {
-    return user?.rol === role;
+    return user?.user_metadata?.rol === role;
   };
 
   const value = {
@@ -150,3 +132,4 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+

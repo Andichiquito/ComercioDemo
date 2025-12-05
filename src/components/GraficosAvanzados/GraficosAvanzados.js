@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { supabase } from '../../supabaseClient';
 import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './GraficosAvanzados.css';
 
@@ -20,7 +20,7 @@ const GraficosAvanzados = () => {
     mensual: 'lineas' // 'lineas', 'area', 'barras'
   });
 
-  const API_BASE = 'http://localhost:5000/api';
+
 
   useEffect(() => {
     fetchChartData();
@@ -30,61 +30,32 @@ const GraficosAvanzados = () => {
     try {
       setLoading(true);
       setError(null);
-      console.log('🔄 Cargando datos para gráficos avanzados...');
-      console.log('🌐 API Base URL:', API_BASE);
+      console.log('🔄 Cargando datos para gráficos avanzados con Supabase...');
 
       const [exportacionesRes, paisesRes, transporteRes, mensualRes] = await Promise.all([
-        axios.get(`${API_BASE}/views/query/vista_estadisticas_generales`, {
-          timeout: 10000,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }),
-        axios.get(`${API_BASE}/views/query/vista_exportaciones_por_pais?limit=8`, {
-          timeout: 10000,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }),
-        axios.get(`${API_BASE}/views/query/vista_medio_transporte`, {
-          timeout: 10000,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }),
-        axios.get(`${API_BASE}/views/query/vista_operaciones_por_mes`, {
-          timeout: 10000,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
+        supabase.from('vista_estadisticas_generales').select('*'),
+        supabase.from('vista_exportaciones_por_pais').select('*').limit(8),
+        supabase.from('vista_medio_transporte').select('*'),
+        supabase.from('vista_operaciones_por_mes').select('*')
       ]);
 
-      console.log('✅ Datos cargados exitosamente:');
-      console.log('- Exportaciones:', exportacionesRes.data.datos?.length || 0, 'registros');
-      console.log('- Países:', paisesRes.data.datos?.length || 0, 'registros');
-      console.log('- Transporte:', transporteRes.data.datos?.length || 0, 'registros');
-      console.log('- Mensual:', mensualRes.data.datos?.length || 0, 'registros');
+      if (exportacionesRes.error) throw exportacionesRes.error;
+      if (paisesRes.error) throw paisesRes.error;
+      if (transporteRes.error) throw transporteRes.error;
+      if (mensualRes.error) throw mensualRes.error;
+
+      console.log('✅ Datos cargados exitosamente');
 
       setChartData({
-        exportaciones: exportacionesRes.data.datos || [],
-        paises: paisesRes.data.datos || [],
-        transporte: transporteRes.data.datos || [],
-        mensual: mensualRes.data.datos || []
+        exportaciones: exportacionesRes.data || [],
+        paises: paisesRes.data || [],
+        transporte: transporteRes.data || [],
+        mensual: mensualRes.data || []
       });
 
     } catch (err) {
       console.error('❌ Error cargando datos:', err);
-
-      if (err.code === 'ECONNREFUSED' || err.code === 'ERR_NETWORK') {
-        setError('Error de conexión: El servidor backend no está disponible. Verifica que esté ejecutándose en el puerto 5000.');
-      } else if (err.response) {
-        setError(`Error del servidor: ${err.response.status} - ${err.response.statusText}`);
-      } else if (err.request) {
-        setError('Error de red: No se pudo conectar con el servidor. Verifica tu conexión.');
-      } else {
-        setError(`Error: ${err.message}`);
-      }
+      setError(`Error: ${err.message}`);
     } finally {
       setLoading(false);
     }

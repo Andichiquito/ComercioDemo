@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { supabase } from '../../supabaseClient';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Card from '../UI/Card';
 import './InternationalTradePanel.css';
@@ -11,15 +11,7 @@ const InternationalTradePanel = () => {
   const [countryData, setCountryData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
 
-  const API_BASE = 'http://localhost:5000/api';
 
-  const apiClient = axios.create({
-    baseURL: API_BASE,
-    timeout: 10000,
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
 
   useEffect(() => {
     fetchDashboardData();
@@ -35,16 +27,21 @@ const InternationalTradePanel = () => {
         countryResponse,
         monthlyResponse
       ] = await Promise.all([
-        apiClient.get('/views/query/vista_estadisticas_generales'),
-        apiClient.get('/views/query/vista_medio_transporte'),
-        apiClient.get('/views/query/vista_exportaciones_por_pais?limit=10'),
-        apiClient.get('/views/query/vista_operaciones_por_mes?limit=12')
+        supabase.from('vista_estadisticas_generales').select('*'),
+        supabase.from('vista_medio_transporte').select('*'),
+        supabase.from('vista_exportaciones_por_pais').select('*').limit(10),
+        supabase.from('vista_operaciones_por_mes').select('*').limit(12)
       ]);
 
-      setStats(statsResponse.data.datos);
-      setTransportData(transportResponse.data.datos);
-      setCountryData(countryResponse.data.datos);
-      setMonthlyData(monthlyResponse.data.datos);
+      if (statsResponse.error) throw statsResponse.error;
+      if (transportResponse.error) throw transportResponse.error;
+      if (countryResponse.error) throw countryResponse.error;
+      if (monthlyResponse.error) throw monthlyResponse.error;
+
+      setStats(statsResponse.data);
+      setTransportData(transportResponse.data);
+      setCountryData(countryResponse.data);
+      setMonthlyData(monthlyResponse.data);
 
     } catch (err) {
       console.error('Error fetching dashboard data:', err);

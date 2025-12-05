@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { supabase } from '../../supabaseClient';
 import { FaChartLine, FaChartBar, FaGlobe, FaBriefcase, FaShip, FaTruck, FaClock, FaLightbulb, FaLock, FaExclamationTriangle } from 'react-icons/fa';
 import MetricCard from '../Metrics/MetricCard';
 import ExportChart from '../Charts/ExportChart';
@@ -18,16 +18,7 @@ const Dashboard = () => {
   const [transportData, setTransportData] = useState([]);
   const [recentOps, setRecentOps] = useState([]);
 
-  const API_BASE = 'http://localhost:5000/api';
-  
-  // Configurar axios con timeout
-  const apiClient = axios.create({
-    baseURL: API_BASE,
-    timeout: 10000, // 10 segundos
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
+
 
   useEffect(() => {
     fetchDashboardData();
@@ -36,7 +27,7 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch all data in parallel
       const [
         statsResponse,
@@ -45,35 +36,28 @@ const Dashboard = () => {
         transportResponse,
         recentResponse
       ] = await Promise.all([
-        apiClient.get('/views/query/vista_estadisticas_generales'),
-        apiClient.get('/views/query/vista_operaciones_por_mes?limit=12'),
-        apiClient.get('/views/query/vista_exportaciones_por_pais?limit=10'),
-        apiClient.get('/views/query/vista_medio_transporte'),
-        apiClient.get('/views/query/vista_operaciones_recientes?limit=10')
+        supabase.from('vista_estadisticas_generales').select('*').limit(10),
+        supabase.from('vista_operaciones_por_mes').select('*').limit(12),
+        supabase.from('vista_exportaciones_por_pais').select('*').limit(10),
+        supabase.from('vista_medio_transporte').select('*'),
+        supabase.from('vista_operaciones_recientes').select('*').limit(10)
       ]);
 
-      setStats(statsResponse.data.datos);
-      setExportData(exportResponse.data.datos);
-      setCountryData(countryResponse.data.datos);
-      setTransportData(transportResponse.data.datos);
-      setRecentOps(recentResponse.data.datos);
+      if (statsResponse.error) throw statsResponse.error;
+      if (exportResponse.error) throw exportResponse.error;
+      if (countryResponse.error) throw countryResponse.error;
+      if (transportResponse.error) throw transportResponse.error;
+      if (recentResponse.error) throw recentResponse.error;
+
+      setStats(statsResponse.data);
+      setExportData(exportResponse.data);
+      setCountryData(countryResponse.data);
+      setTransportData(transportResponse.data);
+      setRecentOps(recentResponse.data);
 
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
-      
-      // Mejor manejo de errores de red
-      if (err.code === 'ECONNREFUSED' || err.code === 'ERR_NETWORK') {
-        setError('Error de conexión: El servidor backend no está disponible. Verifica que esté ejecutándose en el puerto 5000.');
-      } else if (err.response) {
-        // Error con respuesta del servidor
-        setError(`Error del servidor: ${err.response.status} - ${err.response.statusText}`);
-      } else if (err.request) {
-        // Error de red sin respuesta
-        setError('Error de red: No se pudo conectar con el servidor. Verifica tu conexión.');
-      } else {
-        // Otro tipo de error
-        setError(`Error: ${err.message}`);
-      }
+      setError(`Error al cargar datos: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -120,9 +104,9 @@ const Dashboard = () => {
   const totalReexports = stats?.find(s => s.tipo_operacion.includes('REEXPORTACIONES'));
   const totalPersonal = stats?.find(s => s.tipo_operacion.includes('EFECTOS'));
 
-  const totalOperations = (totalExports?.total_operaciones || 0) + 
-                         (totalReexports?.total_operaciones || 0) + 
-                         (totalPersonal?.total_operaciones || 0);
+  const totalOperations = (totalExports?.total_operaciones || 0) +
+    (totalReexports?.total_operaciones || 0) +
+    (totalPersonal?.total_operaciones || 0);
 
   // const totalValue = (totalExports?.valor_total_usd || 0) + 
   //                   (totalReexports?.valor_total_usd || 0) + 
@@ -138,9 +122,9 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="dashboard-header">
         <div className="header-logo-section">
-          <img 
-            src="/download.png" 
-            alt="Universidad del Valle" 
+          <img
+            src="/download.png"
+            alt="Universidad del Valle"
             className="dashboard-logo"
           />
           <div className="header-text">

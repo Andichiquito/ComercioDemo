@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { supabase } from '../../supabaseClient';
 import './DatosComerciales.css';
 
 const DatosComerciales = () => {
@@ -9,7 +9,7 @@ const DatosComerciales = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(100);
-  
+
   // Filtros
   const [filters, setFilters] = useState({
     pais: '',
@@ -25,7 +25,7 @@ const DatosComerciales = () => {
   const [productos, setProductos] = useState([]);
   const [tiposOperacion, setTiposOperacion] = useState([]);
 
-  const API_BASE = 'http://localhost:5000/api';
+
 
   useEffect(() => {
     fetchData();
@@ -44,18 +44,24 @@ const DatosComerciales = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      console.log('Cargando datos comerciales (1,000,000 registros)...');
-      
-      // Obtener datos de operaciones recientes (1,000,000 registros)
-      const response = await axios.get(`${API_BASE}/views/query/vista_operaciones_recientes?limit=1000000`);
-      console.log('Datos cargados:', response.data.datos.length);
-      
-      setData(response.data.datos);
-      setFilteredData(response.data.datos);
+      console.log('Cargando datos comerciales (cap: 1000 registros)...');
+
+      // Obtener datos de operaciones recientes (limitado a 1000 para evitar sobrecarga)
+      const { data: datos, error } = await supabase
+        .from('vista_operaciones_recientes')
+        .select('*')
+        .limit(1000);
+
+      if (error) throw error;
+
+      console.log('Datos cargados:', datos.length);
+
+      setData(datos);
+      setFilteredData(datos);
 
     } catch (err) {
       console.error('Error cargando datos:', err);
-      setError(`Error: ${err.message} - Status: ${err.response?.status}`);
+      setError(`Error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -64,14 +70,25 @@ const DatosComerciales = () => {
   const fetchFilterOptions = async () => {
     try {
       // Obtener países únicos
-      const paisesResponse = await axios.get(`${API_BASE}/views/query/vista_exportaciones_por_pais?limit=100`);
-      const paisesUnicos = [...new Set(paisesResponse.data.datos.map(item => item.nombre_del_pais_de_destino))];
-      setPaises(paisesUnicos.filter(p => p));
+      const { data: paisesData } = await supabase
+        .from('vista_exportaciones_por_pais')
+        .select('nombre_del_pais_de_destino')
+        .limit(100);
+
+      if (paisesData) {
+        const paisesUnicos = [...new Set(paisesData.map(item => item.nombre_del_pais_de_destino))];
+        setPaises(paisesUnicos.filter(p => p));
+      }
 
       // Obtener tipos de operación únicos
-      const tiposResponse = await axios.get(`${API_BASE}/views/query/vista_estadisticas_generales`);
-      const tiposUnicos = tiposResponse.data.datos.map(item => item.tipo_operacion);
-      setTiposOperacion(tiposUnicos);
+      const { data: tiposData } = await supabase
+        .from('vista_estadisticas_generales')
+        .select('tipo_operacion');
+
+      if (tiposData) {
+        const tiposUnicos = tiposData.map(item => item.tipo_operacion);
+        setTiposOperacion(tiposUnicos);
+      }
 
     } catch (err) {
       console.error('Error cargando opciones de filtro:', err);
@@ -81,27 +98,27 @@ const DatosComerciales = () => {
   const applyFilters = () => {
     console.log('Aplicando filtros a', data.length, 'registros...');
     const startTime = performance.now();
-    
+
     let filtered = data;
 
     // Aplicar filtros de manera más eficiente
     if (filters.pais) {
       const paisLower = filters.pais.toLowerCase();
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.nombre_del_pais_de_destino?.toLowerCase().includes(paisLower)
       );
     }
 
     if (filters.producto) {
       const productoLower = filters.producto.toLowerCase();
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.codigo_producto?.toString().includes(filters.producto) ||
         item.descripcion_del_capitulo_nandina?.toLowerCase().includes(productoLower)
       );
     }
 
     if (filters.tipoOperacion) {
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.tipo_operacion?.includes(filters.tipoOperacion)
       );
     }
@@ -124,7 +141,7 @@ const DatosComerciales = () => {
 
     if (filters.busqueda) {
       const searchTerm = filters.busqueda.toLowerCase();
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.nombre_del_pais_de_destino?.toLowerCase().includes(searchTerm) ||
         item.codigo_producto?.toString().includes(searchTerm) ||
         item.descripcion_de_la_aduana_de_despacho?.toLowerCase().includes(searchTerm) ||
@@ -134,7 +151,7 @@ const DatosComerciales = () => {
 
     const endTime = performance.now();
     console.log(`Filtrado completado en ${(endTime - startTime).toFixed(2)}ms. Resultados: ${filtered.length}`);
-    
+
     setFilteredData(filtered);
     setCurrentPage(1);
   };
@@ -310,7 +327,7 @@ const DatosComerciales = () => {
       <div className="data-table-container">
         <div className="table-header">
           <h3>Registros Comerciales</h3>
-       
+
         </div>
 
         <div className="table-wrapper">
@@ -344,8 +361,8 @@ const DatosComerciales = () => {
                     {item.nombre_del_pais_de_destino || 'N/A'}
                   </td>
                   <td className="quantity-cell">
-                    {item.peso_neto_kg ? 
-                      `${parseFloat(item.peso_neto_kg).toLocaleString()} kg` : 
+                    {item.peso_neto_kg ?
+                      `${parseFloat(item.peso_neto_kg).toLocaleString()} kg` :
                       'N/A'
                     }
                   </td>
@@ -375,22 +392,22 @@ const DatosComerciales = () => {
 
         {/* Paginación */}
         <div className="pagination">
-          <button 
+          <button
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
             className="pagination-btn"
           >
             ← Anterior
           </button>
-          
+
           <div className="pagination-info">
             Página {currentPage} de {totalPages}
             <span className="pagination-details">
               ({startIndex + 1}-{Math.min(endIndex, filteredData.length)} de {filteredData.length})
             </span>
           </div>
-          
-          <button 
+
+          <button
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
             className="pagination-btn"

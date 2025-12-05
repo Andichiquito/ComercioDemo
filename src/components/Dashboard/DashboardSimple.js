@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { supabase } from '../../supabaseClient';
 import { FaTruck, FaPlane, FaShip, FaGlobe, FaChartPie, FaChartBar, FaTimesCircle, FaSync, FaUpload, FaBox, FaCheckCircle } from 'react-icons/fa';
 import Card, { StatCard, ChartCard } from '../UI/Card';
 import Button, { IconButton } from '../UI/Button';
@@ -15,16 +15,7 @@ const DashboardSimple = () => {
   const [data, setData] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  const API_BASE = 'http://localhost:5000/api';
 
-  // Configurar axios con timeout
-  const apiClient = axios.create({
-    baseURL: API_BASE,
-    timeout: 10000, // 10 segundos
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
 
   useEffect(() => {
     fetchData();
@@ -40,39 +31,29 @@ const DashboardSimple = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      console.log('Iniciando fetch de datos...');
+      console.log('Iniciando fetch de datos con Supabase...');
 
       // Obtener múltiples datos en paralelo
-      const [testResponse, statsResponse, paisesResponse, transporteResponse] = await Promise.all([
-        apiClient.get('/test-db'),
-        apiClient.get('/views/query/vista_estadisticas_generales'),
-        apiClient.get('/views/query/vista_exportaciones_por_pais?limit=5'),
-        apiClient.get('/views/query/vista_medio_transporte')
+      const [statsResponse, paisesResponse, transporteResponse] = await Promise.all([
+        supabase.from('vista_estadisticas_generales').select('*'),
+        supabase.from('vista_exportaciones_por_pais').select('*').limit(5),
+        supabase.from('vista_medio_transporte').select('*')
       ]);
 
+      if (statsResponse.error) throw statsResponse.error;
+      if (paisesResponse.error) throw paisesResponse.error;
+      if (transporteResponse.error) throw transporteResponse.error;
+
       setData({
-        test: testResponse.data,
-        stats: statsResponse.data,
-        paises: paisesResponse.data,
-        transporte: transporteResponse.data
+        test: { database: 'Supabase' }, // Mock para mantener compatibilidad UI
+        stats: { datos: statsResponse.data }, // Mantener estructura esperada por UI si es necesario, o ajustar UI
+        paises: { datos: paisesResponse.data },
+        transporte: { datos: transporteResponse.data }
       });
 
     } catch (err) {
       console.error('Error detallado:', err);
-
-      // Mejor manejo de errores de red
-      if (err.code === 'ECONNREFUSED' || err.code === 'ERR_NETWORK') {
-        setError('Error de conexión: El servidor backend no está disponible. Verifica que esté ejecutándose en el puerto 5000.');
-      } else if (err.response) {
-        // Error con respuesta del servidor
-        setError(`Error del servidor: ${err.response.status} - ${err.response.statusText}`);
-      } else if (err.request) {
-        // Error de red sin respuesta
-        setError('Error de red: No se pudo conectar con el servidor. Verifica tu conexión.');
-      } else {
-        // Otro tipo de error
-        setError(`Error: ${err.message}`);
-      }
+      setError(`Error al cargar datos: ${err.message}`);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../UI/Toast';
+import { supabase } from '../../supabaseClient';
+import * as XLSX from 'xlsx';
+import bcrypt from 'bcryptjs';
 import { FaUser, FaCheckCircle, FaTimesCircle, FaChartBar, FaCrown, FaEdit, FaTrash, FaExclamationTriangle, FaUpload, FaFileExcel } from 'react-icons/fa';
 import Modal, { ConfirmModal } from '../UI/Modal';
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -9,6 +12,91 @@ import Button from '../UI/Button';
 import Input from '../UI/Input';
 import Table from '../UI/Table';
 import './AdminPanel.css';
+
+// Constants for Excel Processing
+const NUMERIC_COLUMNS = [
+  'codigo_de_la_aduana_de_despacho',
+  'codigo_arancelario_nandina_norma_de_clasificacion_de_productos_',
+  'descripcion_del_producto_segun_codigo_nandina',
+  'codigo_del_pais_de_destino',
+  'codigo_de_zona_geoeconomica',
+  'codigo_de_la_via_de_salida_puerto_aeropuerto_frontera',
+  'codigo_del_departamento_de_origen',
+  'peso_bruto_kg',
+  'peso_neto_kg',
+  'contenido_fino_en_caso_de_minerales_u_otros_productos_que_requi',
+  'valor_fob_en_dolares_estadounidenses'
+];
+
+const COLUMN_MAPPING = {
+  'codigo_de_la_aduana_de_despacho': 'codigo_de_la_aduana_de_despacho',
+  'descripcion_de_la_aduana_de_despacho': 'descripcion_de_la_aduana_de_despacho',
+  'gestion': 'gestion',
+  'mes': 'mes',
+  'tipo_de_operacion_exportacion_reexportacion_o_efectos_personales': 'tipo_de_operacion_exportacion_reexportacion_o_efectos_personale',
+  'codigo_arancelario_nandina_norma_de_clasificacion_de_productos_en_la_can': 'codigo_arancelario_nandina_norma_de_clasificacion_de_productos_',
+  'descripcion_del_producto_segun_codigo_nandina': 'descripcion_del_producto_segun_codigo_nandina',
+  'capitulo_de_la_clasificacion_nandina_primeros_2_digitos': 'capitulo_de_la_clasificacion_nandina_primeros_2_digitos',
+  'descripcion_del_capitulo_nandina': 'descripcion_del_capitulo_nandina',
+  'seccion_de_la_clasificacion_nandina': 'seccion_de_la_clasificacion_nandina',
+  'descripcion_de_la_seccion_nandina': 'descripcion_de_la_seccion_nandina',
+  'codigo_del_pais_de_destino': 'codigo_del_pais_de_destino',
+  'nombre_del_pais_de_destino': 'nombre_del_pais_de_destino',
+  'codigo_de_zona_geoeconomica': 'codigo_de_zona_geoeconomica',
+  'descripcion_de_zona_geoeconomica_can_mercosur_nafta_etc': 'descripcion_de_zona_geoeconomica_can_mercosur_nafta_etc',
+  'medi': 'medi',
+  'descripcion_del_medio_de_transporte_aereo_terrestre_maritimo_etc': 'descripcion_del_medio_de_transporte_aereo_terrestre_maritimo_et',
+  'codigo_de_la_via_de_salida_puerto_aeropuerto_frontera': 'codigo_de_la_via_de_salida_puerto_aeropuerto_frontera',
+  'descripcion_de_la_via_de_salida': 'descripcion_de_la_via_de_salida',
+  'codigo_del_departamento_de_origen': 'codigo_del_departamento_de_origen',
+  'descripcion_del_departamento_de_origen': 'descripcion_del_departamento_de_origen',
+  'cuci3': 'cuci3',
+  'descuci3': 'descuci3',
+  'gce3': 'gce3',
+  'desgce3': 'desgce3',
+  'ciiur3': 'ciiur3',
+  'descripcion_de_la_clasificacion_ciiu_rev3': 'descripcion_de_la_clasificacion_ciiu_rev3',
+  'clasificacion_por_actividad_economica_texto': 'clasificacion_por_actividad_economica_texto',
+  'codact2': 'codact2',
+  'descripcion_del_producto_segun_actividad_economica': 'descripcion_del_producto_segun_actividad_economica',
+  'tnt': 'tnt',
+  'destnt': 'destnt',
+  'cltnt': 'cltnt',
+  'peso_bruto_kg': 'peso_bruto_kg',
+  'peso_neto_kg': 'peso_neto_kg',
+  'contenido_fino_en_caso_de_minerales_u_otros_productos_que_requieran_pureza': 'contenido_fino_en_caso_de_minerales_u_otros_productos_que_requi',
+  'valor_fob_en_dolares_estadounidenses': 'valor_fob_en_dolares_estadounidenses'
+};
+
+const normalizeColumnName = (name) => {
+  if (!name) return null;
+  return String(name).trim().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+};
+
+const convertValue = (value) => {
+  if (value === null || value === undefined || value === '') return null;
+  if (typeof value === 'number') return isNaN(value) ? null : value;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    const onlyNumberChars = /^[-+]?[\d\s,]*\.?\d+$/.test(trimmed);
+    if (onlyNumberChars) {
+      const cleaned = trimmed.replace(/[\s,]/g, '');
+      const numValue = parseFloat(cleaned);
+      if (!isNaN(numValue)) return numValue;
+    }
+    return trimmed;
+  }
+  return String(value);
+};
+
+const ensureNumeric = (value) => {
+  if (value === null || value === undefined) return null;
+  if (typeof value === 'number' && !isNaN(value)) return value;
+  return null;
+};
 
 const AdminPanel = () => {
   const { isAdmin, user: currentUser } = useAuth();
@@ -59,23 +147,15 @@ const AdminPanel = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/users', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const { data, error } = await supabase
+        .from('usuarios')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-      if (!response.ok) {
-        throw new Error('Error al cargar usuarios');
-      }
+      if (error) throw error;
 
-      const data = await response.json();
-      if (data.success) {
-        setUsers(data.data.users || data.data);
-      } else {
-        throw new Error(data.message);
-      }
+      setUsers(data || []);
+
     } catch (error) {
       console.error('Error fetching users:', error);
       setError(error.message);
@@ -159,25 +239,47 @@ const AdminPanel = () => {
     setFormLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/users', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
+      // 1. Verificar si el email existe
+      const { data: existingUser } = await supabase
+        .from('usuarios')
+        .select('id')
+        .eq('email', formData.email.toLowerCase())
+        .single();
 
-      const data = await response.json();
-
-      if (data.success) {
-        addToast('Usuario creado exitosamente', 'success');
-        setShowCreateModal(false);
-        resetForm();
-        fetchUsers();
-      } else {
-        throw new Error(data.message);
+      if (existingUser) {
+        throw new Error('El email ya está registrado');
       }
+
+      // 2. Hash password
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(formData.password, salt);
+
+      // 3. Insertar usuario
+      const newUser = {
+        email: formData.email.toLowerCase(),
+        password_hash: passwordHash,
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        rol: formData.rol,
+        activo: formData.activo,
+        fecha_registro: new Date().toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      const { error: insertError } = await supabase
+        .from('usuarios')
+        .insert(newUser);
+
+      if (insertError) throw insertError;
+
+      addToast('Usuario creado exitosamente (BD)', 'success');
+      addToast('Nota: Para que este usuario pueda iniciar sesión, debe registrarse también en la página de login o usar el mismo email.', 'info');
+
+      setShowCreateModal(false);
+      resetForm();
+      fetchUsers();
+
     } catch (error) {
       console.error('Error creating user:', error);
       addToast(error.message, 'error');
@@ -208,54 +310,49 @@ const AdminPanel = () => {
     setFormLoading(true);
 
     try {
-      // Preparar datos para envío (excluir password vacío y asegurar tipos correctos)
+      // Preparar datos para actualización
       const updateData = {
         nombre: formData.nombre,
         apellido: formData.apellido,
         email: formData.email,
         rol: formData.rol,
-        activo: formData.activo === true || formData.activo === 'true' || formData.activo === 1
+        activo: formData.activo === true || formData.activo === 'true' || formData.activo === 1,
+        updated_at: new Date().toISOString()
       };
+
+      // Si cambia el email, verificar duplicados
+      if (formData.email && formData.email !== selectedUser.email) {
+        const { data: existingUser } = await supabase
+          .from('usuarios')
+          .select('id')
+          .eq('email', formData.email.toLowerCase())
+          .neq('id', selectedUser.id)
+          .single();
+
+        if (existingUser) {
+          throw new Error('El email ya está en uso por otro usuario');
+        }
+        updateData.email = formData.email.toLowerCase();
+      }
 
       // Solo incluir password si no está vacío
       if (formData.password && formData.password.trim() !== '') {
-        updateData.password = formData.password;
+        const salt = await bcrypt.genSalt(10);
+        updateData.password_hash = await bcrypt.hash(formData.password, salt);
       }
 
-      console.log('Enviando datos de actualización:', updateData);
-      console.log('ID del usuario:', selectedUser.id);
+      const { error: updateError } = await supabase
+        .from('usuarios')
+        .update(updateData)
+        .eq('id', selectedUser.id);
 
-      const response = await fetch(`http://localhost:5000/api/users/${selectedUser.id}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(updateData)
-      });
+      if (updateError) throw updateError;
 
-      let data;
-      try {
-        data = await response.json();
-      } catch (parseError) {
-        console.error('Error parseando respuesta:', parseError);
-        throw new Error('Error al procesar la respuesta del servidor');
-      }
+      addToast('Usuario actualizado exitosamente', 'success');
+      setShowEditModal(false);
+      resetForm();
+      fetchUsers();
 
-      console.log('Respuesta del servidor:', data);
-
-      if (!response.ok) {
-        throw new Error(data.message || `Error ${response.status}: ${response.statusText}`);
-      }
-
-      if (data.success) {
-        addToast('Usuario actualizado exitosamente', 'success');
-        setShowEditModal(false);
-        resetForm();
-        fetchUsers();
-      } else {
-        throw new Error(data.message || 'Error al actualizar usuario');
-      }
     } catch (error) {
       console.error('Error updating user:', error);
       addToast(error.message || 'Error al actualizar usuario', 'error');
