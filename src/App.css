@@ -1,0 +1,40 @@
+/* Global App Styles */
+.App {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-content {
+  margin-top: 70px; /* Space for fixed modern header */
+}
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Import chart styles */
+@import './components/Charts/Charts.css';
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-content {
+    margin-top: 120px; /* More space for mobile navigation */
+  }
+}

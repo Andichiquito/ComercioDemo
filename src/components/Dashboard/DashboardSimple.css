@@ -1,0 +1,541 @@
+/* Dashboard Simple Styles with Enhanced Tailwind Integration */
+
+/* Enhanced Loading States */
+.dashboard-loading {
+  @apply min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 flex items-center justify-center;
+  background-size: 400% 400%;
+  animation: gradient-xy 15s ease infinite;
+}
+
+.loading-container {
+  @apply text-center text-white;
+}
+
+.loading-spinner {
+  @apply w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-6;
+}
+
+.loading-dots {
+  @apply flex justify-center space-x-2 mt-4;
+}
+
+.loading-dots span {
+  @apply w-2 h-2 bg-white rounded-full animate-bounce;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+/* Enhanced Error States */
+.dashboard-error {
+  @apply min-h-screen bg-gradient-to-br from-red-500 via-pink-600 to-purple-700 flex items-center justify-center;
+  background-size: 400% 400%;
+  animation: gradient-xy 15s ease infinite;
+}
+
+.error-container {
+  @apply text-center text-white max-w-md mx-auto p-8;
+}
+
+.error-icon {
+  @apply text-6xl mb-4 animate-bounce;
+}
+
+.error-message {
+  @apply bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-6 text-sm;
+}
+
+.retry-button {
+  @apply bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
+}
+
+/* Main Dashboard */
+.dashboard-container {
+  @apply min-h-screen bg-gradient-to-br from-red-800 via-red-700 to-red-900 p-6;
+}
+
+/* Header */
+.dashboard-header {
+  @apply mb-8;
+}
+
+.header-content {
+  @apply flex justify-between items-center flex-wrap gap-4;
+}
+
+.header-left h1 {
+  @apply text-4xl md:text-5xl font-bold text-white mb-2 bg-gradient-to-r from-primary-500 via-secondary-400 to-pink-300 bg-clip-text text-transparent;
+}
+
+.header-left p {
+  @apply text-white/80 text-lg;
+}
+
+.header-right {
+  @apply flex flex-col items-end gap-3;
+}
+
+.live-indicator {
+  @apply flex items-center gap-2 bg-green-500/20 backdrop-blur-sm rounded-full px-4 py-2 border border-green-400/30;
+}
+
+.pulse-dot {
+  @apply w-3 h-3 bg-green-400 rounded-full animate-pulse;
+}
+
+.current-time {
+  @apply text-white/90 font-mono text-lg bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2;
+}
+
+/* Status Card */
+.status-card {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-glass p-6 mb-8 flex items-center gap-4 animate-fade-in;
+}
+
+.status-icon {
+  @apply text-4xl;
+}
+
+.status-content h3 {
+  @apply text-xl font-semibold text-white mb-2;
+}
+
+.status-content p {
+  @apply text-white/80 text-sm;
+}
+
+.status-online {
+  @apply text-green-400 font-semibold;
+}
+
+/* Stats Grid */
+.stats-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8;
+}
+
+.stat-card {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-glass p-6 hover:scale-105 transition-all duration-300 animate-slide-up;
+}
+
+.stat-header {
+  @apply flex items-center gap-4 mb-4;
+}
+
+.stat-icon {
+  @apply text-3xl;
+}
+
+.stat-title {
+  @apply text-lg font-semibold text-white;
+}
+
+.stat-metrics {
+  @apply space-y-3;
+}
+
+.metric {
+  @apply flex justify-between items-center;
+}
+
+.metric-value {
+  @apply text-2xl font-bold text-white;
+}
+
+.metric-label {
+  @apply text-white/70 text-sm;
+}
+
+/* Charts Section */
+.charts-section {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8;
+}
+
+.chart-card {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-glass p-6 animate-scale-in;
+}
+
+.chart-header {
+  @apply flex justify-between items-center mb-6 pb-4 border-b border-white/20;
+}
+
+.chart-header h3 {
+  @apply text-xl font-semibold text-white;
+}
+
+.chart-controls {
+  @apply flex gap-2;
+}
+
+.control-btn {
+  @apply p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all duration-300;
+}
+
+.control-btn.active {
+  @apply bg-blue-500/50 shadow-glow;
+}
+
+.chart-content {
+  @apply space-y-4;
+}
+
+/* Country Items */
+.country-item {
+  @apply space-y-2;
+}
+
+.country-info {
+  @apply flex items-center gap-3;
+}
+
+.country-rank {
+  @apply bg-red-600/50 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center;
+}
+
+.country-name {
+  @apply text-white font-medium;
+}
+
+.country-value {
+  @apply text-red-300 font-semibold text-right;
+}
+
+.country-bar {
+  @apply h-2 bg-white/20 rounded-full overflow-hidden;
+}
+
+.bar-fill {
+  @apply h-full bg-gradient-to-r from-red-400 to-red-600 rounded-full transition-all duration-1000 ease-out;
+}
+
+/* Transport Grid */
+.transport-grid {
+  @apply space-y-4;
+}
+
+.transport-item {
+  @apply flex items-center gap-4 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300;
+}
+
+.transport-icon {
+  @apply text-2xl;
+}
+
+.transport-info {
+  @apply flex-1;
+}
+
+.transport-name {
+  @apply text-white font-medium block mb-1;
+}
+
+.transport-stats {
+  @apply flex justify-between text-sm;
+}
+
+.transport-count {
+  @apply text-white/70;
+}
+
+.transport-percentage {
+  @apply text-red-300 font-semibold;
+}
+
+/* Quick Actions */
+.quick-actions {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-glass p-6;
+}
+
+.quick-actions h3 {
+  @apply text-xl font-semibold text-white mb-4;
+}
+
+.actions-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-4;
+}
+
+.action-btn {
+  @apply flex flex-col items-center gap-2 p-4 rounded-lg transition-all duration-300 transform hover:scale-105;
+}
+
+.action-btn.primary {
+  @apply bg-red-600/50 hover:bg-red-600/70 text-white shadow-glow;
+}
+
+.action-btn.secondary {
+  @apply bg-white/10 hover:bg-white/20 text-white;
+}
+
+.action-icon {
+  @apply text-2xl;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    @apply p-4;
+  }
+  
+  .header-content {
+    @apply flex-col items-start;
+  }
+  
+  .header-right {
+    @apply flex-row items-center self-stretch justify-between;
+  }
+  
+  .stats-grid {
+    @apply grid-cols-1;
+  }
+  
+  .charts-section {
+    @apply grid-cols-1;
+  }
+  
+  .actions-grid {
+    @apply grid-cols-2;
+  }
+}
+
+/* Enhanced Animation Delays */
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+.chart-card:nth-child(1) { animation-delay: 0.4s; }
+.chart-card:nth-child(2) { animation-delay: 0.5s; }
+
+/* Enhanced Custom Animations */
+@keyframes gradient-xy {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+  to { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+    transform: scale(1.05);
+  }
+}
+
+/* Enhanced Hover Effects */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+}
+
+/* Enhanced Glass Effects */
+.glass-enhanced {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-enhanced:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 16px 64px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* Enhanced Gradient Text */
+.gradient-text-enhanced {
+  background: linear-gradient(135deg, #8B1538 0%, #A01D47 25%, #6B0F2A 50%, #BDB6B8 75%, #ffffff 100%);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-xy 15s ease infinite;
+}
+
+/* Enhanced Button Styles */
+.btn-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-enhanced:hover::before {
+  left: 100%;
+}
+
+/* Enhanced Card Animations */
+.card-enter {
+  animation: cardEnter 0.6s ease-out forwards;
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Enhanced Loading States */
+.loading-shimmer {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Enhanced Focus States */
+.focus-enhanced:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  transform: scale(1.02);
+}
+
+/* Enhanced Selection */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
+}
+
+/* Enhanced Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.7));
+}
+
+/* Top Countries Chart Styles */
+.top-countries-chart {
+  @apply w-full h-full;
+}
+
+.countries-list {
+  @apply space-y-3;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.country-item {
+  @apply space-y-2 p-2;
+}
+
+.country-info {
+  @apply flex items-center gap-3;
+}
+
+.country-rank {
+  @apply bg-red-600/50 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0;
+}
+
+.country-name {
+  @apply text-white font-medium flex-1 text-sm;
+}
+
+.country-value {
+  @apply text-red-300 font-semibold text-right text-sm;
+}
+
+.country-bar {
+  @apply h-2 bg-white/20 rounded-full overflow-hidden;
+}
+
+.bar-fill {
+  @apply h-full rounded-full transition-all duration-1000 ease-out;
+}
+
+/* Transport Distribution Chart Styles */
+.transport-distribution-chart {
+  @apply w-full h-full;
+}
+
+.transport-list {
+  @apply space-y-2;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.transport-item {
+  @apply flex items-center gap-3 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300;
+}
+
+.transport-icon {
+  @apply text-xl flex-shrink-0;
+}
+
+.transport-info {
+  @apply flex-1 min-w-0;
+}
+
+.transport-name {
+  @apply text-white font-medium text-sm truncate;
+}
+
+.transport-stats {
+  @apply flex justify-between items-center text-xs mt-1;
+}
+
+.transport-count {
+  @apply text-white/70;
+}
+
+.transport-percentage {
+  @apply text-red-300 font-semibold;
+}

@@ -1,0 +1,241 @@
+/* International Trade Panel Styles */
+.international-trade-panel {
+  @apply min-h-screen bg-gradient-to-br from-slate-100 to-blue-50 p-6;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Header */
+.panel-header {
+  @apply text-center mb-8;
+}
+
+.panel-title {
+  @apply text-3xl font-bold text-slate-800 mb-2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* KPI Grid */
+.kpi-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-4 mb-8;
+}
+
+.kpi-card {
+  @apply rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300;
+  background: linear-gradient(135deg, var(--tw-gradient-stops));
+}
+
+.kpi-content {
+  @apply flex items-center space-x-4;
+}
+
+.kpi-icon {
+  @apply text-3xl;
+}
+
+.kpi-text {
+  @apply flex-1;
+}
+
+.kpi-value {
+  @apply text-2xl font-bold text-white mb-1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.kpi-title {
+  @apply text-sm text-white/90 font-medium;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Charts Section */
+.charts-section {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+}
+
+.chart-card {
+  @apply bg-white rounded-2xl shadow-lg p-6;
+}
+
+.chart-header {
+  @apply mb-6 pb-4 border-b border-gray-200;
+}
+
+.chart-title {
+  @apply text-xl font-semibold text-slate-800 flex items-center;
+}
+
+.chart-content {
+  @apply space-y-4;
+}
+
+/* Chart Legend */
+.chart-legend {
+  @apply flex flex-wrap justify-center gap-4 mt-4;
+}
+
+.legend-item {
+  @apply flex items-center space-x-2;
+}
+
+.legend-color {
+  @apply w-3 h-3 rounded-full;
+}
+
+.legend-label {
+  @apply text-sm text-black font-medium;
+}
+
+/* Custom Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .international-trade-panel {
+    @apply p-4;
+  }
+
+  .kpi-grid {
+    @apply grid-cols-1 gap-3;
+  }
+
+  .kpi-card {
+    @apply p-4;
+  }
+
+  .kpi-content {
+    @apply space-x-3;
+  }
+
+  .kpi-icon {
+    @apply text-2xl;
+  }
+
+  .kpi-value {
+    @apply text-xl;
+  }
+
+  .charts-section {
+    @apply grid-cols-1 gap-4;
+  }
+
+  .chart-card {
+    @apply p-4;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel-title {
+    @apply text-2xl;
+  }
+
+  .kpi-card {
+    @apply p-3;
+  }
+
+  .kpi-content {
+    @apply flex-col space-x-0 space-y-2 text-center;
+  }
+
+  .kpi-icon {
+    @apply text-xl;
+  }
+
+  .kpi-value {
+    @apply text-lg;
+  }
+
+  .kpi-title {
+    @apply text-xs;
+  }
+}
+
+/* Enhanced Hover Effects */
+.kpi-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.chart-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Focus States */
+.kpi-card:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* Loading States */
+.loading-shimmer {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Enhanced Gradients */
+.gradient-pink-purple {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+}
+
+.gradient-blue {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.gradient-orange-pink {
+  background: linear-gradient(135deg, #fb923c, #ec4899);
+}
+
+.gradient-orange {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+}
+
+.gradient-red-pink {
+  background: linear-gradient(135deg, #ef4444, #ec4899);
+}

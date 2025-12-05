@@ -1,0 +1,240 @@
+/* Navigation Styles */
+.navigation {
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 70px;
+}
+
+.nav-brand {
+  flex-shrink: 0;
+}
+
+.brand-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
+  transition: color 0.3s;
+}
+
+.brand-link:hover {
+  color: #667eea;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #667eea;
+}
+
+.nav-link.active {
+  background: #667eea;
+  color: white;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: white;
+  border-radius: 1px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.login-btn, .register-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.login-btn {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.login-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.register-btn {
+  background: #4CAF50;
+  color: white;
+}
+
+.register-btn:hover {
+  background: #45a049;
+}
+
+/* User Menu Styles */
+.user-menu-container {
+  @apply relative;
+}
+
+.user-btn {
+  @apply flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg px-3 py-2 transition-all duration-300;
+}
+
+.user-avatar {
+  @apply w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-sm;
+}
+
+.user-name {
+  @apply text-white font-medium text-sm hidden md:block;
+}
+
+.user-role {
+  @apply text-lg;
+}
+
+.user-dropdown {
+  @apply absolute right-0 top-full mt-2 w-64 bg-white/95 backdrop-blur-md border border-white/20 rounded-lg shadow-xl z-50 animate-scale-in;
+}
+
+.user-info {
+  @apply p-4 border-b border-white/20;
+}
+
+.user-email {
+  @apply text-gray-700 font-medium text-sm;
+}
+
+.user-role-badge {
+  @apply text-xs text-gray-500 mt-1;
+}
+
+.dropdown-divider {
+  @apply h-px bg-white/20;
+}
+
+.dropdown-item {
+  @apply w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors duration-300 text-sm;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+}
+
+.modal-content {
+  @apply w-full max-w-md;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 15px;
+    height: 60px;
+  }
+  
+  .brand-link {
+    font-size: 1.2rem;
+  }
+  
+  .nav-menu {
+    gap: 15px;
+  }
+  
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+  
+  .nav-actions {
+    gap: 10px;
+  }
+  
+  .login-btn, .register-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .user-dropdown {
+    @apply w-56;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-container {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 15px;
+  }
+  
+  .nav-brand {
+    margin-bottom: 10px;
+  }
+  
+  .nav-menu {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .nav-link {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+  
+  .nav-actions {
+    gap: 8px;
+  }
+  
+  .login-btn, .register-btn {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+  
+  .user-dropdown {
+    @apply w-48;
+  }
+}

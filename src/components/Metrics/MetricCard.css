@@ -1,0 +1,156 @@
+.metric-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--card-color);
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.metric-card__icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: var(--icon-bg);
+  color: var(--icon-color);
+}
+
+.metric-card__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.metric-card__title {
+  margin: 0 0 8px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-card__value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+.metric-card__subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #888;
+  line-height: 1.3;
+}
+
+/* Color variants */
+.metric-card--blue {
+  --card-color: #2196F3;
+  --icon-bg: rgba(33, 150, 243, 0.1);
+  --icon-color: #2196F3;
+}
+
+.metric-card--green {
+  --card-color: #4CAF50;
+  --icon-bg: rgba(76, 175, 80, 0.1);
+  --icon-color: #4CAF50;
+}
+
+.metric-card--purple {
+  --card-color: #9C27B0;
+  --icon-bg: rgba(156, 39, 176, 0.1);
+  --icon-color: #9C27B0;
+}
+
+.metric-card--orange {
+  --card-color: #FF9800;
+  --icon-bg: rgba(255, 152, 0, 0.1);
+  --icon-color: #FF9800;
+}
+
+.metric-card--teal {
+  --card-color: #009688;
+  --icon-bg: rgba(0, 150, 136, 0.1);
+  --icon-color: #009688;
+}
+
+.metric-card--brown {
+  --card-color: #795548;
+  --icon-bg: rgba(121, 85, 72, 0.1);
+  --icon-color: #795548;
+}
+
+.metric-card--red {
+  --card-color: #F44336;
+  --icon-bg: rgba(244, 67, 54, 0.1);
+  --icon-color: #F44336;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .metric-card {
+    padding: 15px;
+    gap: 12px;
+  }
+  
+  .metric-card__icon {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
+  
+  .metric-card__value {
+    font-size: 1.5rem;
+  }
+  
+  .metric-card__title {
+    font-size: 0.8rem;
+  }
+  
+  .metric-card__subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .metric-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px 15px;
+  }
+  
+  .metric-card__icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+  }
+  
+  .metric-card__value {
+    font-size: 1.6rem;
+  }
+}

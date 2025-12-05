@@ -1,0 +1,390 @@
+/* Estilos base para todas las gráficas */
+.chart-container {
+  @apply bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20;
+  min-height: 300px;
+}
+
+.chart-title {
+  @apply text-xl font-bold text-gray-800 mb-4 text-center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.chart-content {
+  @apply w-full h-full;
+}
+
+.no-data {
+  @apply text-gray-500 text-center py-8;
+  font-style: italic;
+}
+
+/* Gráfica de líneas históricas */
+.historical-line-chart {
+  @apply bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20;
+  min-height: 350px;
+}
+
+.line-chart-svg {
+  @apply w-full h-auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.data-point {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.data-point:hover {
+  r: 6;
+  filter: drop-shadow(0 0 8px rgba(139, 21, 56, 0.6));
+}
+
+.chart-stats {
+  @apply grid grid-cols-3 gap-4 mt-4;
+}
+
+.stat-item {
+  @apply text-center;
+}
+
+.stat-label {
+  @apply text-gray-600 text-sm block;
+}
+
+.stat-value {
+  @apply text-gray-800 font-bold text-lg;
+}
+
+/* Gráfica de barras */
+.bar-chart {
+  @apply bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20;
+  min-height: 400px;
+}
+
+.bars-container {
+  @apply space-y-3;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.bar-item {
+  @apply flex items-center gap-3;
+}
+
+.bar-label {
+  @apply text-gray-700 text-sm font-medium w-24 flex-shrink-0;
+  text-align: right;
+}
+
+.bar-wrapper {
+  @apply flex-1 bg-gray-200 rounded-full h-8 relative overflow-hidden;
+}
+
+.bar-fill {
+  @apply h-full rounded-full transition-all duration-1000 ease-out flex items-center justify-end pr-2;
+  min-width: 40px;
+}
+
+.bar-value {
+  @apply text-white text-xs font-semibold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.bar-percentage-inline {
+  @apply text-white/90 text-xs font-bold ml-2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.bar-percentage {
+  @apply text-gray-700 text-sm font-semibold w-12 text-right;
+}
+
+.chart-summary {
+  @apply grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-white/20;
+}
+
+.summary-item {
+  @apply text-center;
+}
+
+.summary-label {
+  @apply text-gray-600 text-sm block;
+}
+
+.summary-value {
+  @apply text-gray-800 font-bold;
+}
+
+/* Gráfica de torta */
+.pie-chart {
+  @apply bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20;
+  min-height: 450px;
+}
+
+.pie-container {
+  @apply flex justify-center mb-4;
+}
+
+.pie-svg {
+  @apply w-full h-auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.pie-slice {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.pie-slice:hover {
+  filter: brightness(1.1) drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+}
+
+.pie-legend {
+  @apply space-y-2;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.legend-item {
+  @apply flex items-center gap-3 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300;
+}
+
+.legend-color {
+  @apply w-4 h-4 rounded-full flex-shrink-0;
+}
+
+.legend-text {
+  @apply flex-1 min-w-0;
+}
+
+.legend-label {
+  @apply text-gray-700 font-medium text-sm block;
+}
+
+.legend-value {
+  @apply text-gray-600 text-xs;
+}
+
+/* Gráfica de dispersión */
+.scatter-plot {
+  @apply bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20;
+  min-height: 350px;
+}
+
+.scatter-svg {
+  @apply w-full h-auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.scatter-point {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.scatter-point:hover {
+  r: 8;
+  filter: drop-shadow(0 0 8px rgba(139, 21, 56, 0.6));
+}
+
+.scatter-stats {
+  @apply grid grid-cols-2 gap-4 mt-4;
+}
+
+.stat-row {
+  @apply space-y-2;
+}
+
+/* Gráfica de área */
+.area-chart {
+  @apply bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20;
+  min-height: 350px;
+}
+
+.area-chart-svg {
+  @apply w-full h-auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.area-point {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.area-point:hover {
+  r: 6;
+  filter: drop-shadow(0 0 8px rgba(139, 21, 56, 0.6));
+}
+
+.area-stats {
+  @apply grid grid-cols-3 gap-4 mt-4;
+}
+
+/* Mapa de calor */
+.heatmap-chart {
+  @apply bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20;
+  min-height: 500px;
+}
+
+.heatmap-container {
+  @apply w-full;
+}
+
+.heatmap-grid {
+  @apply flex gap-2 mb-4;
+}
+
+.y-axis-labels {
+  @apply flex flex-col gap-1 w-32 flex-shrink-0;
+}
+
+.y-label {
+  @apply text-gray-700 text-xs font-medium h-8 flex items-center justify-end pr-2;
+  text-align: right;
+}
+
+.heatmap-cells {
+  @apply flex-1 overflow-auto;
+  max-height: 300px;
+}
+
+.heatmap-row {
+  @apply flex gap-1 mb-1;
+}
+
+.heatmap-cell {
+  @apply w-16 h-8 rounded border border-white/20 flex items-center justify-center cursor-pointer transition-all duration-300;
+  min-width: 60px;
+}
+
+.heatmap-cell:hover {
+  @apply scale-110 z-10;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.cell-content {
+  @apply text-center;
+}
+
+.cell-value {
+  @apply text-white text-xs font-bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.cell-count {
+  @apply text-white/80 text-xs;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.cell-percentage {
+  @apply text-white/90 text-xs font-bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.x-axis-labels {
+  @apply flex gap-1 ml-32;
+}
+
+.x-label {
+  @apply text-gray-700 text-xs font-medium w-16 text-center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heatmap-legend {
+  @apply mt-4 p-4 bg-white/5 rounded-lg;
+}
+
+.legend-title {
+  @apply text-gray-700 font-semibold text-sm mb-2 text-center;
+}
+
+.legend-scale {
+  @apply flex justify-center gap-6;
+}
+
+.legend-item {
+  @apply flex flex-col items-center gap-1;
+}
+
+.legend-color {
+  @apply w-6 h-4 rounded;
+}
+
+.heatmap-stats {
+  @apply grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-white/20;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .chart-stats,
+  .chart-summary,
+  .scatter-stats,
+  .area-stats,
+  .heatmap-stats {
+    @apply grid-cols-1 gap-2;
+  }
+  
+  .bars-container {
+    max-height: 200px;
+  }
+  
+  .pie-legend {
+    max-height: 150px;
+  }
+  
+  .heatmap-cell {
+    @apply w-12 h-6;
+    min-width: 48px;
+  }
+  
+  .cell-value,
+  .cell-count {
+    @apply text-xs;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chart-container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Scrollbar personalizado */
+.bars-container::-webkit-scrollbar,
+.pie-legend::-webkit-scrollbar,
+.heatmap-cells::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bars-container::-webkit-scrollbar-track,
+.pie-legend::-webkit-scrollbar-track,
+.heatmap-cells::-webkit-scrollbar-track {
+  @apply bg-white/10 rounded-full;
+}
+
+.bars-container::-webkit-scrollbar-thumb,
+.pie-legend::-webkit-scrollbar-thumb,
+.heatmap-cells::-webkit-scrollbar-thumb {
+  @apply bg-white/30 rounded-full;
+}
+
+.bars-container::-webkit-scrollbar-thumb:hover,
+.pie-legend::-webkit-scrollbar-thumb:hover,
+.heatmap-cells::-webkit-scrollbar-thumb:hover {
+  @apply bg-white/50;
+}

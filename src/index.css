@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #8B1538 0%, #A01D47 25%, #6B0F2A 50%, #BDB6B8 75%, #ffffff 100%);
+  background-size: 400% 400%;
+  animation: gradient-xy 15s ease infinite;
+  min-height: 100vh;
+  color: #333;
+  overflow-x: hidden;
+}
+
+code {
+  font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5));
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.7));
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Custom Tailwind Components */
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-glass;
+  }
+  
+  .glass-card-hover {
+    @apply glass-card hover:bg-white/15 hover:border-white/30 hover:shadow-glass-lg transition-all duration-500;
+  }
+  
+      .gradient-text {
+        @apply bg-gradient-to-r from-primary-500 via-secondary-400 to-pink-300 bg-clip-text text-transparent;
+      }
+      
+      .gradient-text-animated {
+        @apply bg-gradient-to-r from-primary-500 via-secondary-400 to-pink-300 bg-clip-text text-transparent bg-[length:200%_200%] animate-gradient-x;
+      }
+  
+  .glow-effect {
+    @apply shadow-glow hover:shadow-glow-lg transition-all duration-300;
+  }
+  
+  .neon-effect {
+    @apply shadow-neon hover:shadow-neon-lg transition-all duration-300;
+  }
+  
+  .shimmer-effect {
+    @apply relative overflow-hidden;
+  }
+  
+  .shimmer-effect::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-shimmer;
+  }
+  
+  .floating-card {
+    @apply glass-card-hover transform hover:-translate-y-2 hover:scale-105 transition-all duration-500;
+  }
+  
+  .bounce-in {
+    @apply animate-bounce-in;
+  }
+  
+  .zoom-in {
+    @apply animate-zoom-in;
+  }
+  
+  .flip-card {
+    @apply animate-flip;
+  }
+  
+  .wiggle {
+    @apply animate-wiggle;
+  }
+  
+  .aurora-bg {
+    @apply bg-aurora bg-[length:400%_400%] animate-gradient-xy;
+  }
+  
+  .mesh-bg {
+    @apply bg-mesh-gradient bg-[length:400%_400%] animate-gradient-xy;
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  
+      .border-gradient {
+        @apply border-2 border-transparent bg-gradient-to-r from-primary-500 to-secondary-400 bg-clip-border;
+      }
+  
+      .button-primary {
+        @apply bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300;
+      }
+      
+      .button-secondary {
+        @apply bg-secondary-400/20 hover:bg-secondary-400/30 border border-secondary-400/40 hover:border-secondary-400/60 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300;
+      }
+  
+      .input-field {
+        @apply w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all duration-300 backdrop-blur-sm;
+      }
+  
+  .card-hover {
+    @apply transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300;
+  }
+  
+  .pulse-ring {
+    @apply absolute inset-0 rounded-full border-2 border-blue-400 animate-ping;
+  }
+  
+  .loading-dots {
+    @apply flex space-x-1;
+  }
+  
+  .loading-dots span {
+    @apply w-2 h-2 bg-white rounded-full animate-bounce;
+  }
+  
+  .loading-dots span:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  
+  .loading-dots span:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+  to { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+
+@keyframes gradient-xy {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Selection Styles */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
+}
+
+/* Focus Styles */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline-offset: 2px;
+}
+
+/* Smooth Transitions */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}

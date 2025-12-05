@@ -1,0 +1,362 @@
+/* Modern Header Styles */
+.modern-header {
+  @apply fixed top-0 left-0 right-0 z-50;
+  background: linear-gradient(135deg, #8B1538 0%, #A01D47 50%, #6B0F2A 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(139, 21, 56, 0.3);
+}
+
+.header-container {
+  @apply max-w-7xl mx-auto px-4 py-3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+/* Brand Section */
+.brand-section {
+  @apply flex items-center space-x-3;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  @apply flex items-center justify-center;
+}
+
+.univalle-logo {
+  height: 50px;
+  width: auto;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.univalle-logo:hover {
+  transform: scale(1.05);
+}
+
+.brand-text {
+  @apply flex flex-col;
+}
+
+.brand-name {
+  @apply text-white font-bold text-lg;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.brand-subtitle {
+  @apply text-white/80 text-sm font-medium;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation Menu */
+.nav-menu {
+  @apply flex items-center space-x-1;
+  flex: 1;
+  justify-content: center;
+  max-width: 800px;
+}
+
+.nav-item {
+  @apply flex flex-col items-center p-3 rounded-xl transition-all duration-300;
+  min-width: 80px;
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-item:hover {
+  @apply bg-white/10 transform scale-105;
+}
+
+.nav-item.active {
+  @apply shadow-lg;
+  background: linear-gradient(135deg, #8B1538 0%, #A01D47 100%);
+  box-shadow: 0 0 20px rgba(139, 21, 56, 0.4);
+}
+
+.nav-icon {
+  @apply text-xl mb-1;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+.nav-text {
+  @apply text-center;
+}
+
+.nav-label {
+  @apply text-white text-xs font-semibold;
+  line-height: 1.2;
+}
+
+.nav-sublabel {
+  @apply text-white/80 text-xs;
+  line-height: 1.2;
+}
+
+/* Actions Section */
+.actions-section {
+  @apply flex items-center space-x-4;
+  flex-shrink: 0;
+}
+
+/* Theme Toggle */
+.theme-toggle-container {
+  @apply flex items-center;
+}
+
+.theme-toggle {
+  @apply relative w-12 h-6 rounded-full transition-all duration-300;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.theme-toggle:hover {
+  @apply bg-white/20;
+}
+
+.toggle-track {
+  @apply w-full h-full rounded-full relative;
+}
+
+.toggle-thumb {
+  @apply absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full flex items-center justify-center text-xs transition-transform duration-300;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle.dark .toggle-thumb {
+  @apply transform translate-x-6;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+  @apply flex items-center space-x-3;
+}
+
+.login-button {
+  @apply flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all duration-300;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-button:hover {
+  @apply transform scale-105 shadow-lg;
+}
+
+.register-button {
+  @apply flex items-center space-x-2 px-4 py-2 text-white rounded-lg transition-all duration-300;
+  background: linear-gradient(135deg, #8B1538 0%, #A01D47 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.register-button:hover {
+  background: linear-gradient(135deg, #A01D47 0%, #8B1538 100%);
+}
+
+.register-button:hover {
+  @apply transform scale-105 shadow-lg;
+}
+
+.button-icon {
+  @apply text-sm;
+}
+
+/* User Menu */
+.user-menu-container {
+  @apply relative;
+}
+
+.user-button {
+  @apply flex items-center space-x-3 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg transition-all duration-300;
+}
+
+.user-button:hover {
+  @apply transform scale-105;
+}
+
+.user-avatar {
+  @apply w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-sm;
+  background: linear-gradient(135deg, #8B1538 0%, #A01D47 100%);
+}
+
+.user-info {
+  @apply flex flex-col;
+}
+
+.user-name {
+  @apply text-white text-sm font-medium;
+}
+
+.user-role {
+  @apply text-white/70 text-xs;
+}
+
+.user-dropdown {
+  @apply absolute right-0 top-full mt-2 w-64 bg-white/95 backdrop-blur-md border border-white/20 rounded-xl shadow-xl z-50;
+  animation: slideDown 0.3s ease-out;
+}
+
+.dropdown-header {
+  @apply p-4 border-b border-white/20;
+}
+
+.user-email {
+  @apply text-gray-700 font-medium text-sm;
+}
+
+.user-role-badge {
+  @apply text-xs text-gray-500 mt-1;
+}
+
+.dropdown-divider {
+  @apply h-px bg-white/20;
+}
+
+.dropdown-item {
+  @apply w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 transition-colors duration-300 text-sm;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+}
+
+.modal-content {
+  @apply w-full max-w-md;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .nav-menu {
+    @apply space-x-0;
+  }
+  
+  .nav-item {
+    @apply min-w-16 p-2;
+  }
+  
+  .nav-label, .nav-sublabel {
+    @apply text-xs;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    @apply px-2 py-2;
+    height: 60px;
+  }
+  
+  .brand-name {
+    @apply text-base;
+  }
+  
+  .nav-menu {
+    @apply hidden;
+  }
+  
+  .actions-section {
+    @apply space-x-2;
+  }
+  
+  .login-button, .register-button {
+    @apply px-3 py-2 text-sm;
+  }
+  
+  .button-icon {
+    @apply hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-section {
+    @apply space-x-2;
+  }
+  
+  .logo-icon {
+    @apply text-xl;
+  }
+  
+  .brand-name {
+    @apply text-sm;
+  }
+  
+  .auth-buttons {
+    @apply space-x-2;
+  }
+  
+  .login-button, .register-button {
+    @apply px-2 py-2 text-xs;
+  }
+}
+
+/* Enhanced Hover Effects */
+.nav-item::before {
+  content: '';
+  @apply absolute inset-0 rounded-xl opacity-0 transition-opacity duration-300;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+}
+
+.nav-item:hover::before {
+  @apply opacity-100;
+}
+
+.nav-item.active::before {
+  @apply opacity-100;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3));
+}
+
+/* Focus States */
+.nav-item:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.theme-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.login-button:focus,
+.register-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Loading States */
+.nav-item.loading {
+  @apply opacity-50 pointer-events-none;
+}
+
+.nav-item.loading .nav-icon {
+  animation: pulse 2s infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

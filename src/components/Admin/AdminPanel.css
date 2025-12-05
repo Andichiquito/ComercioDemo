@@ -1,0 +1,368 @@
+/* AdminPanel Styles */
+
+.admin-panel {
+  @apply min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-400 p-6;
+}
+
+/* Header */
+.admin-header {
+  @apply text-center mb-8;
+}
+
+.admin-title {
+  @apply text-4xl md:text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3;
+}
+
+.admin-icon {
+  @apply text-5xl animate-pulse;
+}
+
+.admin-subtitle {
+  @apply text-white/80 text-lg;
+}
+
+/* Access Denied */
+.access-denied {
+  @apply text-center py-20;
+}
+
+.access-denied-icon {
+  @apply text-8xl mb-6;
+}
+
+.access-denied h2 {
+  @apply text-3xl font-bold text-white mb-4;
+}
+
+.access-denied p {
+  @apply text-white/70 text-lg;
+}
+
+/* Loading */
+.loading-container {
+  @apply text-center py-20;
+}
+
+.loading-container p {
+  @apply text-white/80 text-lg mt-4;
+}
+
+/* Stats Cards */
+.admin-stats {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8;
+}
+
+.stat-card {
+  @apply p-6 flex items-center gap-4 hover:scale-105 transition-all duration-300;
+}
+
+.stat-icon {
+  @apply text-4xl;
+}
+
+.stat-content h3 {
+  @apply text-3xl font-bold text-gray-800 mb-1;
+}
+
+.stat-content p {
+  @apply text-gray-600 text-sm;
+}
+
+/* Controls */
+.admin-controls {
+  @apply p-6 mb-6;
+}
+
+.controls-row {
+  @apply flex flex-col lg:flex-row gap-4 items-center justify-between;
+}
+
+.search-section {
+  @apply flex-1 max-w-md;
+}
+
+.search-input {
+  @apply w-full;
+}
+
+.search-input input {
+  @apply text-gray-800 placeholder-gray-500;
+}
+
+.filters-section {
+  @apply flex gap-3 flex-wrap;
+}
+
+.filter-select {
+  @apply px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all duration-300;
+}
+
+.filter-select option {
+  @apply bg-gray-800 text-white;
+}
+
+.create-button {
+  @apply flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300;
+}
+
+.button-icon {
+  @apply text-lg;
+}
+
+/* Table Container */
+.users-table-container {
+  @apply p-6;
+}
+
+/* User Info in Table */
+.user-info {
+  @apply flex items-center gap-3;
+}
+
+.user-avatar {
+  @apply w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-semibold text-sm;
+}
+
+.user-name {
+  @apply text-white font-medium;
+}
+
+.user-email {
+  @apply text-white/70 text-sm;
+}
+
+/* Role Badges */
+.role-badge {
+  @apply px-3 py-1 rounded-full text-sm font-semibold;
+}
+
+.role-badge.admin {
+  @apply bg-primary-500/20 text-primary-300 border border-primary-400/30;
+}
+
+.role-badge.cliente {
+  @apply bg-secondary-400/20 text-secondary-300 border border-secondary-400/30;
+}
+
+/* Status Badges */
+.status-badge {
+  @apply px-3 py-1 rounded-full text-sm font-semibold;
+}
+
+.status-badge.active {
+  @apply bg-green-500/20 text-green-300 border border-green-400/30;
+}
+
+.status-badge.inactive {
+  @apply bg-red-500/20 text-red-300 border border-red-400/30;
+}
+
+/* Action Buttons */
+.action-buttons {
+  @apply flex gap-2;
+}
+
+.edit-button {
+  @apply bg-primary-500/20 hover:bg-primary-500/30 text-primary-300 border border-primary-400/30 hover:border-primary-400/50;
+}
+
+.delete-button {
+  @apply bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-400/30 hover:border-red-400/50;
+}
+
+/* Forms */
+.user-form {
+  @apply space-y-6;
+}
+
+.form-row {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.form-group {
+  @apply space-y-2;
+}
+
+.form-group label {
+  @apply text-white font-medium text-sm;
+}
+
+.form-select {
+  @apply w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all duration-300 backdrop-blur-sm;
+}
+
+.form-select option {
+  @apply bg-gray-800 text-white;
+}
+
+.checkbox-label {
+  @apply flex items-center gap-3 cursor-pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  @apply w-5 h-5 text-primary-600 bg-white/10 border border-white/20 rounded focus:ring-primary-500 focus:ring-2;
+}
+
+.checkbox-text {
+  @apply text-white/80;
+}
+
+.form-actions {
+  @apply flex gap-4 justify-end pt-4 border-t border-white/20;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-panel {
+    @apply p-4;
+  }
+
+  .admin-title {
+    @apply text-3xl flex-col gap-2;
+  }
+
+  .admin-stats {
+    @apply grid-cols-2;
+  }
+
+  .controls-row {
+    @apply flex-col items-stretch;
+  }
+
+  .filters-section {
+    @apply justify-center;
+  }
+
+  .action-buttons {
+    @apply flex-col;
+  }
+
+  .form-row {
+    @apply grid-cols-1;
+  }
+
+  .form-actions {
+    @apply flex-col;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-stats {
+    @apply grid-cols-1;
+  }
+
+  .stat-card {
+    @apply flex-col text-center;
+  }
+
+  .filters-section {
+    @apply flex-col;
+  }
+
+  .filter-select {
+    @apply w-full;
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-panel>* {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.admin-panel>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.admin-panel>*:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.admin-panel>*:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.admin-panel>*:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Hover Effects */
+.stat-card:hover {
+  @apply shadow-glow;
+}
+
+.filter-select:hover {
+  @apply bg-gray-50 border-gray-400;
+}
+
+.create-button:hover {
+  @apply shadow-glow-lg;
+}
+
+/* Focus States */
+.filter-select:focus,
+.form-select:focus {
+  @apply ring-2 ring-primary-400 ring-opacity-50;
+}
+
+/* Loading States */
+.form-loading {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Error States */
+.error-message {
+  @apply bg-red-500/20 border border-red-400/30 text-red-300 px-4 py-3 rounded-lg;
+}
+
+/* Success States */
+.success-message {
+  @apply bg-green-500/20 border border-green-400/30 text-green-300 px-4 py-3 rounded-lg;
+}
+
+/* Table Enhancements */
+.users-table-container .table {
+  @apply bg-transparent;
+}
+
+.users-table-container .table th {
+  @apply bg-white/10 text-white/90 border-white/20;
+}
+
+.users-table-container .table td {
+  @apply border-white/20;
+}
+
+.users-table-container .table tbody tr:hover {
+  @apply bg-white/5;
+}
+
+/* Modal Enhancements */
+.user-form .form-group input:focus,
+.user-form .form-group select:focus {
+  @apply ring-2 ring-primary-400 ring-opacity-50;
+}
+
+/* Custom Scrollbar for Table */
+.users-table-container::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+.users-table-container::-webkit-scrollbar-track {
+  @apply bg-white/10 rounded;
+}
+
+.users-table-container::-webkit-scrollbar-thumb {
+  @apply bg-white/30 rounded hover:bg-white/50;
+}

@@ -1,0 +1,200 @@
+/* Auth Components Styles */
+.auth-container {
+  @apply min-h-screen bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-400 flex items-center justify-center p-4;
+}
+
+.auth-card {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-glass p-8 w-full max-w-md animate-scale-in;
+}
+
+.auth-header {
+  @apply text-center mb-6;
+}
+
+.auth-header h2 {
+  @apply text-3xl font-bold mb-2;
+}
+
+.auth-header p {
+  @apply text-white/80 text-sm;
+}
+
+.auth-form {
+  @apply space-y-4;
+}
+
+.form-row {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.form-group {
+  @apply space-y-2;
+}
+
+.form-group label {
+  @apply block text-white font-medium text-sm;
+}
+
+.form-input {
+  @apply w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all duration-300;
+}
+
+.form-input:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.form-input.error {
+  @apply border-red-400 focus:ring-red-400 focus:border-red-400;
+}
+
+.password-input-container {
+  @apply relative;
+}
+
+.password-toggle {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors duration-300;
+}
+
+.password-toggle:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.error-message {
+  @apply bg-red-500/20 border border-red-400/30 rounded-lg p-3 flex items-center gap-2 text-red-200 text-sm;
+}
+
+.error-icon {
+  @apply text-lg;
+}
+
+.field-error {
+  @apply text-red-300 text-xs mt-1 block;
+}
+
+.password-requirements {
+  @apply mt-2 p-3 bg-white/5 border border-white/10 rounded-lg;
+}
+
+.requirement-text {
+  @apply text-white/80 text-xs font-medium mb-2;
+}
+
+.requirement-list {
+  @apply list-disc list-inside space-y-1 text-white/70 text-xs;
+}
+
+.requirement-list li {
+  @apply ml-2;
+}
+
+.auth-button {
+  @apply w-full py-3 px-4 rounded-lg font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.auth-button.primary {
+  @apply bg-primary-500 hover:bg-primary-600 shadow-lg hover:shadow-xl transform hover:scale-105;
+}
+
+.auth-button.secondary {
+  @apply bg-white/10 hover:bg-white/20 border border-white/30;
+}
+
+.loading-spinner-small {
+  @apply w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin;
+}
+
+.auth-footer {
+  @apply text-center mt-6 pt-6 border-t border-white/20;
+}
+
+.auth-footer p {
+  @apply text-white/80 text-sm;
+}
+
+.link-button {
+  @apply text-primary-300 hover:text-primary-200 font-semibold transition-colors duration-300 disabled:opacity-50;
+}
+
+/* Modal Styles */
+.auth-modal-overlay {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+}
+
+.auth-modal-content {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-glass p-0 w-full max-w-md max-h-[90vh] overflow-y-auto animate-scale-in;
+}
+
+.auth-modal-header {
+  @apply flex justify-between items-center p-6 border-b border-white/20;
+}
+
+.auth-modal-title {
+  @apply text-xl font-semibold text-white;
+}
+
+.auth-modal-close {
+  @apply text-white/70 hover:text-white text-2xl transition-colors duration-300;
+}
+
+.auth-modal-body {
+  @apply p-6;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .auth-card {
+    @apply p-6;
+  }
+  
+  .form-row {
+    @apply grid-cols-1;
+  }
+  
+  .auth-header h2 {
+    @apply text-2xl;
+  }
+}
+
+/* Invitation Modal Styles */
+.invitation-content {
+  @apply text-center;
+}
+
+.invitation-icon {
+  @apply mb-6;
+}
+
+.floating-icon {
+  @apply text-6xl animate-float;
+}
+
+.invitation-text h4 {
+  @apply bg-gradient-to-r from-primary-500 via-secondary-400 to-pink-300 bg-clip-text text-transparent;
+}
+
+.features-list {
+  @apply space-y-3 mb-6;
+}
+
+.feature-item {
+  @apply flex items-center gap-3 text-white/90 text-sm;
+}
+
+.feature-icon {
+  @apply text-lg;
+}
+
+.access-options {
+  @apply mt-6;
+}
+
+.button-group {
+  @apply space-y-2;
+}
+
+/* Animation Delays */
+.auth-form .form-group:nth-child(1) { animation-delay: 0.1s; }
+.auth-form .form-group:nth-child(2) { animation-delay: 0.2s; }
+.auth-form .form-group:nth-child(3) { animation-delay: 0.3s; }
+.auth-form .form-group:nth-child(4) { animation-delay: 0.4s; }
+.auth-form .form-group:nth-child(5) { animation-delay: 0.5s; }
